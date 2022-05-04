@@ -13,7 +13,9 @@ const isValid = function (value) {
 const isValidRequestBody = function(requestBody) {
     return Object.keys(requestBody).length > 0
 }
-
+const isValidObjectId = function(objectId) {
+    return mongoose.Types.ObjectId.isValid(objectId)
+}
 
 
 // Create a college document api handler
@@ -49,12 +51,27 @@ const createCollege = async function (req, res) {
 
 const createIntern = async function (req, res) {
     try {
-      let data = req.body;
-      if (!mongoose.Types.ObjectId.isValid(data.collegeId)) {
+      let requestBody = req.body;
+      const {name, email, mobile, collegeId} = requestBody
+      if (!isValidRequestBody(requestBody)) {
+        res.status(400).send({status: false , msg: 'Please provide details of the intern'}) 
+      }
+      if (!isValidObjectId(collegeId)) {
         return res.status(400).send({ status: false, msg: "Invalid Object-Id" });
       }
-      let intern = await internModel.create(data);
-      return res.status(201).send({ status: true, data: intern });
+      if (!isValid(name)) {
+        res.status(400).send({status: false , msg : 'Enter appropriate name' })
+      }
+      if (!isValid(mobile)) {
+        res.status(400).send({status: false , msg : 'Enter appropriate mobile number  ' })
+      }
+      if (!isValid(email)) {
+        res.status(400).send({status: false , msg : 'Enter appropriate email Id' })
+      } 
+
+      const internData = {name, email, mobile, collegeId}
+      const newIntern = await internModel.create(internData);
+      return res.status(201).send({ status: true, data: newIntern });
     } catch (error) {
       return res.status(500).send({ status: false, msg: error.message });
     }
