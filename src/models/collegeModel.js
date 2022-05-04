@@ -1,6 +1,6 @@
-const { links } = require("express/lib/response");
+// const { links } = require("express/lib/response");
 const mongoose = require("mongoose");
-const ObjectId = mongoose.Schema.Types.ObjectId;
+// const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const collegeModel = new mongoose.Schema(
   {
@@ -27,4 +27,4 @@ const collegeModel = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("College", collegeModel);
+module.exports = mongoose.model('College', collegeModel);

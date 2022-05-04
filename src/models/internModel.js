@@ -10,8 +10,15 @@ const internModel = new mongoose.Schema(
     },
     email: {
       type: String,
+      unique: true,
       trim: true,
-      required: "Email Address is required",
+      lowercase: true,
+      required: "Email address is required",
+      validate: {
+        validator: function (email) {
+          return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+        }, message: 'Please fill a valid email address', isAsync: false
+      }
     },
     mobile: {
       type: String,

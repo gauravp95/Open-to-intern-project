@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const Controller = require('../controllers/controller.js');
 
 
 
-router.post("/functionup/colleges", )
-router.post("/functionup/interns", )
-router.get("/functionup/collegeDetails",)
+
+router.post("/functionup/colleges", Controller.createCollege)
+router.post("/functionup/interns", Controller.createIntern)
+// router.get("/functionup/collegeDetails",)
 
 
 
