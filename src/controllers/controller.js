@@ -67,7 +67,10 @@ const createIntern = async function (req, res) {
       }
       if (!isValid(email)) {
         res.status(400).send({status: false , msg : 'Enter appropriate email Id' })
-      } 
+      }
+      if(!( /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+        res.status(400).send({status: false , msg: 'Please enter valid email Id'})
+      }
       if (!(mobile.length == 10)) {
         res.status(400).send({status: false, msg: 'Enter 10 digit mobile no.'})
       }
