@@ -68,10 +68,14 @@ const createIntern = async function (req, res) {
       if (!isValid(email)) {
         res.status(400).send({status: false , msg : 'Enter appropriate email Id' })
       } 
+      if (!(mobile.length == 10)) {
+        res.status(400).send({status: false, msg: 'Enter 10 digit mobile no.'})
+      }
       const isEmailAlreadyUsed = await internModel.findOne({email})
       if (isEmailAlreadyUsed) {
         res.status(400).send({status: false, msg: 'Email Address already registered'})
       }
+
       const internData = {name, email, mobile, collegeId}
       const newIntern = await internModel.create(internData);
       return res.status(201).send({ status: true, data: newIntern });
