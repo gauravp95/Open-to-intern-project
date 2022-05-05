@@ -25,7 +25,7 @@ const createCollege = async function (req, res) {
             res.status(400).send({status: false , msg: 'Please provide details of the college'}) 
         }
 
-        const {name, fullName, logoLink} = requestBody;
+        const {name, fullName, logoLink} = requestBody;        //object destructuring 
         
         if (!isValid(name)) {
             res.status(400).send({status: false , msg : 'name sholuld be valid name' })
@@ -73,7 +73,8 @@ const createIntern = async function (req, res) {
       if (!(mobile.length == 10)) {
         res.status(400).send({status: false, msg: 'Enter 10 digit mobile no.'})
       }
-      const isEmailAlreadyUsed = await internModel.findOne({email})
+      
+      const isEmailAlreadyUsed = await internModel.findOne({email})  // {email:email} = {email} //object shorthand property
       if (isEmailAlreadyUsed) {
         res.status(400).send({status: false, msg: 'Email Address already registered'})
       }
@@ -95,18 +96,23 @@ const getInterns = async function (req, res) {
         res.status(400).send({status: false , msg : 'College name should be valid' })
       }
       let collegeId = await collegeModel.findOne({name: collegeName}).select({_id:1})
+
+      if (collegeId == null) {
+        res.status(404).send({status: false, msg: 'College Not found'})
+      }
+
       let id = collegeId._id
       console.log(id);
-      
+
       let interns = await internModel.find({collegeId:id});
       console.log(interns);
       
       if (interns.length == 0) {
         res.status(404).send({status:false, msg: "No Interns found "})
       }
-      res.status(200).send({status: true, data: interns})
+      return res.status(200).send({status: true, data: interns})
     } catch (error) {
-      res.status(500).send({ status: false, msg: error.message });
+      return res.status(500).send({ status: false, error: error.message });
     }
 }   
   
