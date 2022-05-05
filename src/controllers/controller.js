@@ -1,4 +1,3 @@
-// const jwt = require("jsonwebtoken");
 const collegeModel = require("../models/collegeModel");
 const internModel = require("../models/internModel");
 
