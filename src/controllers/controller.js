@@ -95,7 +95,7 @@ const getInterns = async function (req, res) {
       let interns = await internModel.find({collegeId:id});
       console.log(interns);
       
-      if (!interns) {
+      if (interns.length == 0) {
         res.status(404).send({status:false, msg: "No Interns found "})
       }
       res.status(200).send({status: true, data: interns})
