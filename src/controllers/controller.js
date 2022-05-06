@@ -38,8 +38,16 @@ const createCollege = async function (req, res) {
         if (!isValid(logoLink)) {
             res.status(400).send({status: false , msg : 'logolink should be valid url' })
         }
+        const isNameAlreadyReg = await collegeModel.findOne({name}) 
+        if (isNameAlreadyReg) {
+        res.status(400).send({status: false, msg: 'name is already registered'})
+        }
+        const isFullNameAlreadyReg = await collegeModel.findOne({fullName})
+        if (isFullNameAlreadyReg) {
+          res.status(400).send({status: false , msg: 'fullName already registered'})
+        }
         const collegeData = {name, fullName,logoLink}
-        const newCollege = await collegeModel.create(collegeData)
+        const newCollege = await collegeModel.create(collegeData)  
         res.status(201).send({ status: true, data: newCollege })
     } catch (error) {
         return res.status(500).send({ status: false,msg: error.msg});
@@ -74,7 +82,7 @@ const createIntern = async function (req, res) {
         res.status(400).send({status: false, msg: 'Enter 10 digit mobile no.'})
       }
       
-      const isEmailAlreadyUsed = await internModel.findOne({email})  // {email:email} = {email} //object shorthand property
+      const isEmailAlreadyUsed = await internModel.findOne({email})  
       if (isEmailAlreadyUsed) {
         res.status(400).send({status: false, msg: 'Email Address already registered'})
       }
