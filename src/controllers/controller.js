@@ -59,10 +59,14 @@ const createCollege = async function (req, res) {
 const createIntern = async function (req, res) {
     try {
       let requestBody = req.body;
-      const {name, email, mobile, collegeId} = requestBody
+      const {name, email, mobile, collegeName} = requestBody
       if (!isValidRequestBody(requestBody)) {
         res.status(400).send({status: false , msg: 'Please provide details of the intern'}) 
       }
+      const data = await collegeModel.findOne({ name: collegeName }).select({ _id: 1 })
+      if (!data)
+          res.status(400).send({ status: false, msg: "invalid college name" })
+      const collegeId = data._id;
       if (!isValidObjectId(collegeId)) {
         return res.status(400).send({ status: false, msg: "Invalid Object-Id" });
       }
